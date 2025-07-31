@@ -1,9 +1,12 @@
-import React from "react";
+import React,{useState} from "react";
 import { useParams } from "react-router-dom";
 import allData from "./DummyData";
+import CartRow from "./CartRow";
+import { CartItem } from "./CartItems";
+import { Link } from "react-router-dom";
+
 
 function ProductDetails(){
-
     const sku=useParams().sku;
     let product;
 
@@ -15,11 +18,26 @@ function ProductDetails(){
         }
     }
 
+    function handleCart(){
+        let available=false;
+        for(let i=0;i<CartItem.length;i++){
+            if(product.sku==CartItem[i].sku){
+                available=true;
+                break;
+            }
+        }
+
+        if(available==false){
+            CartItem.push(product);
+        } 
+    }
+
+
     let {title,price,Category,Url,oldprice}=product;
 
     return (
 
-        <div className=" flex flex-col bg-gray-200 m-auto p-5 mt-10 mb-10  sm:flex-row max-w-4xl gap-10  sm:border-2 border-gray-700 rounded-lg">
+        <div className="grow flex flex-col bg-white m-auto p-5 mt-10 mb-10  sm:flex-row max-w-4xl gap-10  rounded-lg">
 
             <div className="sm:w-2/5">
                 <img className="w-xs object-fit" src={Url} alt={Category} />
@@ -33,8 +51,10 @@ function ProductDetails(){
                 </div>
                 <p className="text-xl text-gray-500">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptate odio reprehenderit modi aut, tenetur commodi optio. Tempore odio error voluptatum eum ducimus. Nemo, vel facilis facere soluta labore impedit similique?</p>
                 <div className="flex gap-5">
-                    <input className="w-10 text-xl text-center  border border-black rounded-md  inline-block" value="1" />
-                    <button className=" text-white text-lg  border px-5 py-1 bg-red-500 border-red-500 rounded-md">ADD TO CART</button>
+                   < Link to={"/cart"}>
+                        <button onClick={handleCart} className=" text-white text-lg  px-5 py-1 bg-[#ff9f00]  rounded-md">ADD TO CART</button>
+                    </Link>  
+                    <button className=" text-white text-lg  px-10 py-1 bg-[#fb641b]  rounded-md">BUY NOW</button>
                 </div>
 
             </div>

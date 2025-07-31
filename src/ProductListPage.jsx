@@ -6,8 +6,6 @@ import NoMatching from './NoMatching';
 function ProductListPage() {
 
     const allData=DummyData;
-    console.log(allData);
-
 
     const[query,Setquery]=useState('');
     const[sort,Setsort]=useState("Default")
@@ -45,8 +43,8 @@ function ProductListPage() {
     }
   
   return (
-      <div className="bg-gray-200 p-5">
-        <div className="bg-white max-w-2xl  m-auto mt-10 mb-10 p-10 flex flex-col">
+      
+        <div className="grow bg-white max-w-2xl  m-auto mt-10 mb-10 p-10 flex flex-col">
 
             <div className="flex flex-col gap-5 sm:flex-row justify-between mb-10 ">
               <input onChange={HandleQuery} className="border-2 border-blue-800 px-7 rounded-lg " placeholder='Search Here ...' />
@@ -63,7 +61,7 @@ function ProductListPage() {
 
         </div>
 
-      </div>
+     
   )
 }
 

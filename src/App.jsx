@@ -4,7 +4,7 @@ import Footer from './Footer';
 import ProductListPage from './ProductListPage';
 import {Routes,Route} from 'react-router-dom';
 import ProductDetails from './ProductDetails';
-import NoMatching from './NoMatching';
+import CartPage from './Cartpage';
 
 
 function App() {
@@ -12,16 +12,16 @@ function App() {
 
   return (
           <>
-          
+          <div className='flex flex-col h-screen bg-gray-200 overflow-scroll'>
           <Navbar />
-
-          <Routes>
+            <Routes>
                 <Route index element={<ProductListPage />}></Route>
                 <Route path="/ProductDetails/:sku/" element={<ProductDetails />}></Route>
+                <Route path="/Cart" element={   <CartPage />} ></Route>
 
           </Routes>
-
           <Footer />
+          </div>
                 
         </>
         
