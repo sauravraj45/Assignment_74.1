@@ -1,67 +1,63 @@
-import React,{useState} from "react";
+import React,{useEffect, useState} from "react";
 import { useParams } from "react-router-dom";
-import allData from "./DummyData";
 import CartRow from "./CartRow";
-import { CartItem } from "./CartItems";
 import { Link } from "react-router-dom";
+import { getProductData } from "./Api";
+import Loading from "./Loading";
 
+function ProductDetails({cart,onCart}){
+    const {id} = useParams();
+    const[product,setProduct]=useState();
+    const [quantity, setQuantity] = useState(1);
+   
+    useEffect(() => {
+    getProductData(id).then((response) => {
+      setProduct(response.data);
+    });
+  }, [id]);
 
-function ProductDetails(){
-    const sku=useParams().sku;
-    let product;
+   function handleQuantityChange(e) {
+    const val = Math.max(1, Number(e.target.value));
+    setQuantity(val);
+  }
 
-    for(let i=0;i<allData.length;i++){
-        const p=allData[i];
-        if(sku==p.sku){
-            product=p;
-            break;
-        }
-    }
-
-    function handleCart(){
-        let available=false;
-        for(let i=0;i<CartItem.length;i++){
-            if(product.sku==CartItem[i].sku){
-                available=true;
-                break;
-            }
-        }
-
-        if(available==false){
-            CartItem.push(product);
-        } 
-    }
-
-
-    let {title,price,Category,Url,oldprice}=product;
+   function handleAddToCart() {
+    const newCart = { ...cart };
+    newCart[id] = (newCart[id] || 0) + quantity;
+    onCart(newCart);
+  }
 
     return (
-
-        <div className="grow flex flex-col bg-white m-auto p-5 mt-10 mb-10  sm:flex-row max-w-4xl gap-10  rounded-lg">
-
-            <div className="sm:w-2/5">
-                <img className="w-xs object-fit" src={Url} alt={Category} />
+        <>
+        {product ? (
+        <div className="flex flex-col bg-white m-auto p-5 mt-10 mb-10  sm:flex-row max-w-4xl gap-10  rounded-lg">
+            <div className="sm:w-2/5 bg-gray-100">
+                <img className="w-xs object-fit" src={product.thumbnail} alt={product.category} />
             </div>
 
             <div className="sm:w-3/5 space-y-3">
-                <h1 className="text-3xl font-medium">{title}</h1>
+                <h1 className="text-3xl font-medium">{product.title}</h1>
                 <div className="flex gap-1">
-                    {oldprice!=null && <p class="text-xl font-medium text-gray-500 line-through">${oldprice}</p>}
-                    <p className="text-xl font-medium">${price}</p>
+                    <p className="text-xl font-medium">${product.price}</p>
                 </div>
-                <p className="text-xl text-gray-500">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptate odio reprehenderit modi aut, tenetur commodi optio. Tempore odio error voluptatum eum ducimus. Nemo, vel facilis facere soluta labore impedit similique?</p>
+                <p className="text-xl text-gray-500">{product.description}</p>
                 <div className="flex gap-5">
-                   < Link to={"/cart"}>
-                        <button onClick={handleCart} className=" text-white text-lg  px-5 py-1 bg-[#ff9f00]  rounded-md">ADD TO CART</button>
-                    </Link>  
-                    <button className=" text-white text-lg  px-10 py-1 bg-[#fb641b]  rounded-md">BUY NOW</button>
+                    <input onChange={handleQuantityChange} value={quantity} type="number" min="1" className='border-2 w-10 text-black text-center'  />
+                    <button  onClick={handleAddToCart} className=" text-white text-lg  px-5 py-1 bg-[#ff9f00]  rounded-md">ADD TO CART</button>
+                    <Link to={"/login"}>
+                        <button className=" text-white text-lg  px-10 py-1 bg-[#fb641b]  rounded-md">BUY NOW</button>
+                    </Link>
+                    
                 </div>
 
             </div>
 
         </div>
+        ): (<Loading />)}
+        </>
 
     );
 }
 
 export default ProductDetails;
+
