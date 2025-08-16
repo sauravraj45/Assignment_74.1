@@ -1,10 +1,12 @@
 import React,{useState,useEffect} from "react";
 import { Link } from "react-router-dom";
 import CartRow from "./CartRow";
+import BuyNowMessage from "./BuyNowMessage";
 
 function CartList({ products,cart,onCart ,onRemove}) {
    
     const [pendingCart, setPendingCart] = useState({ ...cart });
+    const [checkout, setCheckout] = useState(false); 
         
     useEffect(() => {
         setPendingCart({ ...cart });
@@ -31,10 +33,19 @@ function CartList({ products,cart,onCart ,onRemove}) {
     }));
   }
 
+function handleProceedToCheckout() {
+    onCart({}); 
+    setCheckout(true);
+  }
 
-    
+  function handleBackHome() {
+    setCheckout(false); 
+  }
 
-    
+  if (checkout) {
+    return <BuyNowMessage onBackHome={handleBackHome} />;
+  }
+
     return (
         <>
             <table className="max-w-4xl bg-white m-auto mt-10 mb-10  w-full border-2 border-gray-300 text-gray-500">
@@ -106,12 +117,11 @@ function CartList({ products,cart,onCart ,onRemove}) {
                     </tr>
                     <tr className="text-center">
                         <td colSpan="2">
-                            <Link to={"/login"}>
-                            
-                            <button className="text-white bg-red-500 px-5 py-2 rounded-md mb-3 mt-3">
+                            <button
+                             onClick={handleProceedToCheckout}
+                             className="text-white bg-red-500 px-5 py-2 rounded-md mb-3 mt-3">
                                 PROCEED TO CHECKOUT
                             </button>
-                            </Link>
                         </td>
                     </tr>
                 </tbody>
