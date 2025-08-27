@@ -10,7 +10,7 @@ function Navbar({ totalCount }) {
     <nav className="flex justify-around items-center py-5 px-6 bg-white shadow-md">
       <img
         className="w-20 cursor-pointer"
-        src="src/logo.jpg"
+        src="/logo.jpg"
         alt="logo"
         onClick={() => navigate('/')}
       />
