@@ -10,12 +10,11 @@ function Navbar({ totalCount }) {
     <nav className="flex justify-around items-center py-5 px-6 bg-white shadow-md">
       <img
         className="w-20 cursor-pointer"
-        src="https://www.allaboutlean.com/wp-content/uploads/2019/10/Amazon-Logo.png"
-        alt="Amazon"
+        src="src/logo.jpg"
+        alt="logo"
         onClick={() => navigate('/')}
       />
-
-      <div className="flex items-center space-x-10">
+       <div className="flex items-center space-x-10">
         <Link to="/Cart">
           <div className="relative">
             <AiOutlineShopping className="w-10 h-10 text-red-500 cursor-pointer hover:text-red-700" />
@@ -31,7 +30,7 @@ function Navbar({ totalCount }) {
           className="text-gray-700 cursor-pointer hover:text-gray-900"
           onClick={() => navigate('/dashboard')}
         />
-      </div>
+      </div> 
     </nav>
   );
 }

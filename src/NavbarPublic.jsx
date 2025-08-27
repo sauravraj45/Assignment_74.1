@@ -6,7 +6,7 @@ function NavbarPublic() {
     <nav className="bg-white shadow-md p-6 pl-20">
         <img
           className="w-20"
-          src="https://www.allaboutlean.com/wp-content/uploads/2019/10/Amazon-Logo.png"
+          src="src/logo.jpg"
           alt="Amazon"
         />
     </nav>
