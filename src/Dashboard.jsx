@@ -13,7 +13,7 @@ function Dashboard({ user, setUser }) {
       <main className="flex-1 p-6 md:p-10">
         <div className="bg-white shadow rounded-lg p-6 md:p-8 mb-8">
           <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2 text-center md:text-left">
-            Welcome, {user.full_name}! 🎉
+            Welcome, {user.fullName}! 🎉
           </h1>
           <p className="text-gray-600 text-center md:text-left">
             Here's your dashboard overview. Manage your account and check your stats.

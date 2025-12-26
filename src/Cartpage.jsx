@@ -39,3 +39,4 @@ function CartPage({ cart, onCart ,onRemove}) {
 }
 
 export default CartPage;
+

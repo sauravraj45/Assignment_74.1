@@ -34,8 +34,8 @@ function CartList({ products,cart,onCart ,onRemove}) {
   }
 
 function handleProceedToCheckout() {
-    onCart({}); 
     setCheckout(true);
+    onCart({}); 
   }
 
   function handleBackHome() {
@@ -131,3 +131,4 @@ function handleProceedToCheckout() {
 }
 
 export default CartList;
+

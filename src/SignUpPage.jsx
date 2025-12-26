@@ -32,7 +32,7 @@ function SignUpPage({ setUser }) {
     setIsSubmitting(true);
     setApiError("");
 
-    axios.post("https://myeasykart.codeyogi.io/signup", {
+    axios.post("http://localhost:5000/api/auth/signup", {
       fullName: values.username,
       email: values.email,
       password: values.password,
@@ -138,7 +138,7 @@ function SignUpPage({ setUser }) {
 
         <p className='text-center'>
           Already have an account?{" "}
-          <Link to="/login" className='text-blue-600'>Login</Link>
+          <Link to="/login" className='text-blue-600'>Sign in</Link>
         </p>
       </form>
     </div>

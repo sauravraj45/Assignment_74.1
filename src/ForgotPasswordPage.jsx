@@ -9,7 +9,7 @@ function ForgotPasswordPage() {
   async function callForgotApi(values) {
     setApiMessage("");
     try {
-      const res = await fetch("https://myeasykart.codeyogi.io/forgot-password", {
+      const res = await fetch("http://localhost:5000/api/auth/forgot-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
@@ -39,7 +39,7 @@ function ForgotPasswordPage() {
         <input type="email" id="email" placeholder="Email" value={values.email} onChange={handleChange} onBlur={handleBlur} className='pl-3 pr-3 py-2 border-2 border-[#329ca8] rounded-md w-full' />
         {touched.email && errors.email && <div className='text-red-500 text-sm mt-1'>{errors.email}</div>}
         <button type="submit" disabled={!dirty || !isValid} className='bg-blue-700 text-xl text-white py-2 rounded-md disabled:bg-gray-400'>Forgot Password</button>
-        <p className='text-blue-600 text-center'><Link to="/">Back to Login</Link></p>
+        <p className='text-blue-600 text-center'><Link to="/login">Back to Sign in</Link></p>
       </form>
     </div>
   );

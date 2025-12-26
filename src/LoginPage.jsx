@@ -8,7 +8,7 @@ import { FaEnvelope, FaLock } from 'react-icons/fa';
 function LoginPage({ setUser }) {
 
   function callLoginApi(values, bag){
-    axios.post("https://myeasykart.codeyogi.io/login", {
+    axios.post("http://localhost:5000/api/auth/login", {
         email: values.email,
         password: values.password,
     })
@@ -40,8 +40,8 @@ function LoginPage({ setUser }) {
       <div className='flex flex-col mt-10 mb-10'>
           <form onSubmit={handleSubmit} className='flex flex-col gap-3 bg-white p-10 rounded-lg m-auto'>
               <div className='space-y-3 m-5'>
-                  <h1 className='text-4xl font-medium text-center'>Login</h1>
-                  <p className='text-xl text-bg-300 text-center'>Enter your credentials to login</p>
+                  <h1 className='text-4xl font-medium text-center'>Sign in</h1>
+                  <p className='text-xl text-bg-300 text-center'>Enter your credentials to Sign in</p>
               </div>
 
               <div className='relative'>
@@ -77,7 +77,7 @@ function LoginPage({ setUser }) {
                       type="submit"
                       disabled={!dirty || !isValid}
                       className='bg-blue-700 text-xl text-white py-2 rounded-md disabled:bg-gray-400'>
-                      Login
+                      Sign In
                   </button>
                   <p className='text-blue-500 text-center self-end'>
                       <Link to={"/forgotpassword"}>Forgot Password?</Link>
