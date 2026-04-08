@@ -1,61 +1,142 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+
+import React, { useState } from "react";
+import AddressSection from "./AddressSection";
+import { FaUser, FaBox, FaMapMarkerAlt, FaSignOutAlt } from "react-icons/fa";
+import OrdersSection from "./OrdersSection";
 
 function Dashboard({ user, setUser }) {
-  const navigate = useNavigate();
-  const handleLogout = () => {
+  const [activeTab, setActiveTab] = useState("profile");
+
+  function handleLogout() {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     setUser(null);
-  };
+  }
 
   return (
-    <div className="flex flex-col max-w-3xl m-auto mt-10 mb-10 md:flex-row  bg-gray-100">
-      <main className="flex-1 p-6 md:p-10">
-        <div className="bg-white shadow rounded-lg p-6 md:p-8 mb-8">
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2 text-center md:text-left">
-            Welcome, {user.fullName}! 🎉
-          </h1>
-          <p className="text-gray-600 text-center md:text-left">
-            Here's your dashboard overview. Manage your account and check your stats.
-          </p>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          <div className="bg-white shadow rounded-lg p-6 text-center">
-            <h3 className="text-lg font-semibold text-gray-700 mb-2">Email</h3>
-            <p className="text-gray-500">{user.email}</p>
-          </div>
-          <div className="bg-white shadow rounded-lg p-6 text-center">
-            <h3 className="text-lg font-semibold text-gray-700 mb-2">Role</h3>
-            <p className="text-gray-500">{user?.role || "Member"}</p>
-          </div>
-          <div className="bg-white shadow rounded-lg p-6 text-center">
-            <h3 className="text-lg font-semibold text-gray-700 mb-2">Status</h3>
-            <p className="text-gray-500">Active</p>
-          </div>
-        </div>
-        <div className="mt-10 text-center flex justify-around">
+    <div className="max-w-6xl m-auto mt-6 px-4 flex flex-col md:flex-row items-start gap-6">
 
-          <button
-          onClick={() => navigate('/')}
-          className="bg-blue-800 text-xl text-white px-5 py-3 rounded-lg hover:bg-blue-500 transition"
-          >Back to Home
-          </button>
+      {/* 🔥 LEFT CARD */}
+      <div className="md:w-1/4 w-full bg-white shadow rounded-lg p-4 flex flex-col ">
 
+        {/* TOP */}
+        <div>
+
+          {/* USER */}
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center text-white font-bold text-lg">
+              {user.fullName[0]}
+            </div>
+            <div>
+              <p className="text-sm text-gray-500">Hello,</p>
+              <p className="font-semibold">{user.fullName}</p>
+            </div>
+          </div>
+
+          <hr className="my-3" />
+
+          {/* MENU */}
+          <div className="flex md:flex-col gap-2 overflow-x-auto md:overflow-visible">
+
+            <button
+              onClick={() => setActiveTab("profile")}
+              className={`flex items-center gap-2 px-3 py-2 rounded transition whitespace-nowrap ${
+                activeTab === "profile"
+                  ? "bg-blue-100 text-blue-600 font-medium"
+                  : "hover:bg-gray-100"
+              }`}
+            >
+              <FaUser />
+              Profile
+            </button>
+
+            <button
+              onClick={() => setActiveTab("orders")}
+              className={`flex items-center gap-2 px-3 py-2 rounded transition whitespace-nowrap ${
+                activeTab === "orders"
+                  ? "bg-blue-100 text-blue-600 font-medium"
+                  : "hover:bg-gray-100"
+              }`}
+            >
+              <FaBox />
+              Orders
+            </button>
+
+            <button
+              onClick={() => setActiveTab("address")}
+              className={`flex items-center gap-2 px-3 py-2 rounded transition whitespace-nowrap ${
+                activeTab === "address"
+                  ? "bg-blue-100 text-blue-600 font-medium"
+                  : "hover:bg-gray-100"
+              }`}
+            >
+              <FaMapMarkerAlt />
+              Address
+            </button>
+
+          </div>
+        </div>
+
+        {/* 🔥 LOGOUT */}
+        <div className="mt-3 pt-4 border-t">
           <button
             onClick={handleLogout}
-            className="bg-red-600 text-xl text-white px-5 py-3 rounded-lg hover:bg-red-400 transition"
+            className="flex items-center gap-2 w-full px-3 py-2 text-red-500 hover:bg-gray-100 rounded transition"
           >
+            <FaSignOutAlt />
             Logout
           </button>
         </div>
-      </main>
+
+      </div>
+
+      {/* 🔥 RIGHT CONTENT */}
+      <div className="md:w-3/4 w-full bg-white shadow rounded-lg p-6">
+
+        {/* PROFILE */}
+        {activeTab === "profile" && (
+          <div>
+            <h2 className="text-xl md:text-2xl font-bold mb-4">
+              Personal Information
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <input
+                value={user.fullName.split(" ")[0]}
+                readOnly
+                className="border p-2 rounded w-full"
+              />
+              <input
+                value={user.fullName.split(" ")[1] || ""}
+                readOnly
+                className="border p-2 rounded w-full"
+              />
+            </div>
+
+            <div className="mt-5">
+              <p className="font-semibold">Email Address</p>
+              <input
+                value={user.email}
+                readOnly
+                className="border p-2 w-full mt-2 rounded"
+              />
+            </div>
+          </div>
+        )}
+
+        {/* ORDERS */}
+       {activeTab === "orders" && <OrdersSection />}
+
+        {/* ADDRESS */}
+        {activeTab === "address" && <AddressSection />}
+
+      </div>
+
     </div>
   );
 }
 
 export default Dashboard;
-
-
 
 
 

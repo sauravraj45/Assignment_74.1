@@ -12,7 +12,7 @@ function Product({Url,title,Category,price,id}){
             </Link>
             <p className="text-red-600 text-xl"> ☆☆☆☆☆ </p>
             <div className="flex gap-1">
-                <p className="font-medium">${price}</p>
+                <p className="font-medium"> ₹{price}</p>
             </div>
             
         </div>

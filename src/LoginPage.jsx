@@ -15,6 +15,7 @@ function LoginPage({ setUser }) {
     .then((response) => {
         const { user, token } = response.data;
         localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(user)); 
         setUser(user); 
     })
     .catch(() => {
