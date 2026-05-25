@@ -1,4 +1,4 @@
-# Apna Store – E-Commerce Web Application  
+# Apna Store – Modern E-Commerce Web Application  
 
 **Live Demo:** https://assignment-74-1.netlify.app/  
 
@@ -6,30 +6,42 @@
 
 ## Overview  
 
-Apna Store is a modern and responsive E-Commerce web application designed to provide a seamless online shopping experience. The platform allows users to browse products, view detailed product information, manage their shopping cart, and securely authenticate using token-based authorization.
+Apna Store is a fully responsive and modern E-Commerce web application designed to provide a seamless online shopping experience across desktop, tablet, and mobile devices.  
 
-This project demonstrates practical implementation of frontend development, API integration, and secure authentication in a real-world scenario.
+The platform allows users to browse products by categories, search products dynamically, view detailed product information, manage their shopping cart, add delivery addresses, complete secure online payments, and track order status in real-time.  
+
+This project demonstrates practical implementation of frontend development, API integration, responsive UI/UX design, authentication systems, payment gateway integration, and modern ecommerce architecture in a real-world scenario.
 
 ---
 
 ## Features  
 
-- Product listing with search and sorting functionality  
-- Detailed product pages with descriptions and pricing  
+- Dynamic product listing with category-wise browsing  
+- Smart ecommerce-style search functionality  
+- Detailed product pages with multiple product images  
+- Similar products recommendations section  
 - Add to cart, remove from cart, and update quantity  
-- Secure user authentication (Login & Signup)  
+- Secure Login & Signup authentication system  
 - Token-based authorization for protected routes  
-- Responsive design for desktop and mobile devices  
-- REST API integration for dynamic data handling  
+- Razorpay payment gateway integration  
+- Delivery address management section  
+- Dynamic order confirmation system  
+- Order tracking & delivery status updates  
+- Infinite scrolling products section  
+- Product filtering and sorting options  
+- Responsive design for desktop, tablet, and mobile devices  
+- REST API integration for dynamic product handling  
 
 ---
 
 ## Tech Stack  
 
 - **Frontend:** React.js, Tailwind CSS  
-- **State Management:** Context API  
-- **API Integration:** REST API  
+- **Routing:** React Router DOM  
+- **State Management:** React Hooks & Context API  
+- **API Integration:** REST API & Axios  
 - **Authentication:** Token-based Authentication  
+- **Payment Gateway:** Razorpay Integration  
 - **Deployment:** Netlify  
 
 ---
@@ -38,10 +50,12 @@ This project demonstrates practical implementation of frontend development, API 
 
 The objective of this project is to build a scalable and user-friendly E-Commerce platform that focuses on:  
 
-- Delivering a clean and intuitive user interface  
-- Ensuring secure authentication and data handling  
-- Efficient cart and state management  
-- Providing a smooth and responsive user experience  
+- Delivering a clean and intuitive ecommerce user interface  
+- Ensuring secure authentication and payment handling  
+- Efficient cart and product state management  
+- Providing smooth shopping and checkout experience  
+- Building responsive and modern ecommerce architecture  
+- Implementing dynamic search and product filtering systems  
 
 ---
 
@@ -54,17 +68,26 @@ src/
 ├── context/
 ├── services/
 ├── assets/
-└── App.jsx
-
+├── Api.js
+├── App.jsx
+└── main.jsx
 ```
-
 
 ---
 
 ## Authentication  
 
 The application uses token-based authentication to secure user sessions.  
-User credentials are verified through API calls, and tokens are used to maintain authenticated access across the application.
+
+User credentials are verified through API calls, and authentication tokens are used to maintain secure access across protected routes within the application.
+
+---
+
+## Payment Integration  
+
+The application includes Razorpay payment gateway integration for secure and smooth online transactions.  
+
+Users can complete purchases securely and receive dynamic order confirmation along with expected delivery tracking information.
 
 ---
 
@@ -84,18 +107,20 @@ npm install
 
 # Start development server
 npm run dev
-
 ```
 
 ---
 
-## Future Enhancements
+## Future Enhancements  
 
-- 💳 Payment gateway integration (Stripe/Razorpay)  
-- 📦 Order history and tracking  
-- 🧑‍💼 Admin dashboard for product management  
 - ❤️ Wishlist functionality  
-- ⭐ Product reviews and ratings    
+- ⭐ Product reviews and ratings  
+- 🧑‍💼 Admin dashboard for product management  
+- 📦 Order history section  
+- 🎟 Coupon and discount system  
+- 🤖 AI-based product recommendations  
+- 🛒 Real backend database integration  
+- 📊 Sales analytics dashboard  
 
 ---
 
@@ -127,4 +152,5 @@ Passionate about building scalable web applications and solving real-world probl
 ## License  
 
 This project is developed for educational and demonstration purposes only.  
+
 Any use of this code for commercial purposes is not permitted without prior authorization.
