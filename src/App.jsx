@@ -1,108 +1,208 @@
+import React, { useState, useEffect } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import axios from "axios";
 
-import React, { useState, useEffect } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
-import axios from 'axios';
-
-
-import Navbar from './Navbar';
-import Footer from './Footer';
-import ProductListPage from './ProductListPage';
-import ProductDetails from './ProductDetails';
-import CartPage from './Cartpage';
-import LoginPage from './LoginPage';
-import SignUpPage from './SignUpPage';
-import ForgotPasswordPage from './ForgotPasswordPage';
-import Dashboard from './Dashboard';
-
+import Navbar from "./Navbar";
+import Footer from "./Footer";
+import HomePage from "./HomePage";
+import ProductDetails from "./ProductDetails";
+import CartPage from "./Cartpage";
+import LoginPage from "./LoginPage";
+import SignUpPage from "./SignUpPage";
+import ForgotPasswordPage from "./ForgotPasswordPage";
+import Dashboard from "./Dashboard";
+import CategoryPage from "./CategoryPage";
+import ProductListPage from "./ProductListPage"
 
 function App() {
+
   const [user, setUser] = useState(null);
 
+  // CART
   const [cart, setCart] = useState(() => {
     try {
+
       const saved = localStorage.getItem("my-cart");
+
       return saved ? JSON.parse(saved) : {};
+
     } catch {
+
       return {};
     }
   });
 
+  // AUTH CHECK
   useEffect(() => {
+
     const token = localStorage.getItem("token");
 
     if (token) {
+
       axios
         .get("http://localhost:5000/api/auth/me", {
-          headers: { Authorization: token },
+          headers: {
+            Authorization: token,
+          },
         })
-        .then(res => setUser(res.data))
-        .catch(() => localStorage.removeItem("token"));
+
+        .then((res) => {
+
+          setUser(res.data);
+
+        })
+
+        .catch(() => {
+
+          localStorage.removeItem("token");
+        });
     }
+
   }, []);
 
-  const totalCount = Object.values(cart).reduce((sum, q) => sum + q, 0);
+  // TOTAL CART COUNT
+  const totalCount = Object.values(cart).reduce(
+    (sum, q) => sum + q,
+    0
+  );
 
+  // HANDLE CART
   function handleCart(newCart) {
+
     setCart(newCart);
-    localStorage.setItem("my-cart", JSON.stringify(newCart));
+
+    localStorage.setItem(
+      "my-cart",
+      JSON.stringify(newCart)
+    );
   }
 
+  // REMOVE PRODUCT
   function handleRemove(productId) {
+
     const newCart = { ...cart };
+
     delete newCart[productId];
+
     setCart(newCart);
-    localStorage.setItem("my-cart", JSON.stringify(newCart));
+
+    localStorage.setItem(
+      "my-cart",
+      JSON.stringify(newCart)
+    );
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-200">
+    <div className="flex flex-col min-h-screen bg-[#f1f3f6]">
 
-      <Navbar user={user} totalCount={totalCount} />
+      {/* NAVBAR */}
+      <Navbar
+        user={user}
+        totalCount={totalCount}
+      />
 
-
+      {/* ROUTES */}
       <div className="flex-grow">
+
         <Routes>
 
-          {/* ALWAYS SHOW PRODUCT LIST FIRST */}
+          {/* HOME */}
+          <Route
+            path="/"
+            element={<HomePage />}
+          />
 
-          <Route path="/" element={<ProductListPage />} />
+          {/* CATEGORY PAGE */}
+          <Route
+            path="/category/:categoryName"
+            element={<CategoryPage />}
+          />
 
-          <Route path="/productdetails/:id" element={<ProductDetails cart={cart} onCart={handleCart} />} />
-          <Route path="/cart" element={<CartPage cart={cart} onCart={handleCart} onRemove={handleRemove} />} />
-          
+          {/* PRODUCT DETAILS */}
+          <Route
+            path="/ProductDetails/:id"
+            element={
+              <ProductDetails
+                cart={cart}
+                onCart={handleCart}
+              />
+            }
+          />
 
-          {/* AUTH PAGES */}
+          {/* CART */}
+          <Route
+            path="/cart"
+            element={
+              <CartPage
+                cart={cart}
+                onCart={handleCart}
+                onRemove={handleRemove}
+              />
+            }
+          />
+
+          {/* LOGIN */}
           <Route
             path="/login"
-            element={user ? <Navigate to="/" /> : <LoginPage setUser={setUser} />}
+            element={
+              user ? (
+                <Navigate to="/" />
+              ) : (
+                <LoginPage setUser={setUser} />
+              )
+            }
           />
 
+          {/* SIGNUP */}
           <Route
             path="/signup"
-            element={user ? <Navigate to="/" /> : <SignUpPage setUser={setUser} />}
+            element={
+              user ? (
+                <Navigate to="/" />
+              ) : (
+                <SignUpPage setUser={setUser} />
+              )
+            }
           />
+          <Route
+  path="/products"
+  element={<ProductListPage />}
+/>
 
-          <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
-         
+          {/* FORGOT PASSWORD */}
+          <Route
+            path="/forgotpassword"
+            element={<ForgotPasswordPage />}
+          />
 
           {/* DASHBOARD */}
-
           <Route
             path="/dashboard"
-            element={user ? <Dashboard user={user} setUser={setUser} /> : <Navigate to="/" />}
+            element={
+              user ? (
+                <Dashboard
+                  user={user}
+                  setUser={setUser}
+                />
+              ) : (
+                <Navigate to="/" />
+              )
+            }
           />
 
-
           {/* FALLBACK */}
-          <Route path="*" element={<Navigate to="/" />} />
+          <Route
+            path="*"
+            element={<Navigate to="/" />}
+          />
 
         </Routes>
       </div>
 
+      {/* FOOTER */}
       <Footer />
     </div>
   );
 }
 
 export default App;
-

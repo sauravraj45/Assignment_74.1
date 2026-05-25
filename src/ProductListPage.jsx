@@ -1,81 +1,237 @@
-import React,{useEffect, useState} from 'react';
-import ProductList from './ProductList';
-import NoMatching from './NoMatching';
-import { getProductList } from './Api';
+// import React, { useEffect, useState } from "react";
+
+// import ProductList from "./ProductList";
+// import Loading from "./Loading";
+// import NoMatching from "./NoMatching";
+
+// import { getProductList } from "./Api";
+
+// function ProductListPage() {
+
+//   const [products, setProducts] = useState([]);
+//   const [loading, setLoading] = useState(true);
+
+//   // FETCH PRODUCTS
+//   useEffect(() => {
+
+//     async function fetchProducts() {
+
+//       try {
+
+//         const response = await getProductList();
+
+//         setProducts(response.data.products);
+
+//       } catch (error) {
+
+//         console.log(error);
+
+//       } finally {
+
+//         setLoading(false);
+//       }
+//     }
+
+//     fetchProducts();
+
+//   }, []);
+
+//   return (
+//     <div className="bg-[#f1f3f6] min-h-screen">
+
+//       <div className="max-w-7xl mx-auto px-4 py-6">
+
+//         <div className="bg-white rounded-xl shadow-sm p-5">
+
+//           {/* HEADER */}
+//           <div className="mb-7">
+
+//             <h1 className="text-3xl font-bold text-gray-800">
+//               All Products
+//             </h1>
+
+//             <p className="text-gray-500 mt-1">
+//               {products.length} Products Available
+//             </p>
+//           </div>
+
+//           {/* PRODUCTS */}
+//           {loading ? (
+
+//             <Loading />
+
+//           ) : (
+
+//             <>
+//               {products.length > 0 ? (
+
+//                 <ProductList products={products} />
+
+//               ) : (
+
+//                 <NoMatching />
+
+//               )}
+//             </>
+//           )}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default ProductListPage;
+
+import React, {
+  useEffect,
+  useState,
+} from "react";
+
+import {
+  useLocation,
+} from "react-router-dom";
+
+import ProductList from "./ProductList";
+import NoMatching from "./NoMatching";
 import Loading from "./Loading";
 
+import {
+  getProductList,
+} from "./Api";
+
 function ProductListPage() {
-    const[productList,setProductList]=useState([]);
-    const[query,Setquery]=useState('');
-    const [loading, setLoading] = useState(true);
-    const[sort,Setsort]=useState("Default")
 
-    useEffect(function (){
-       const promise = getProductList();
-       promise.then((response)=>{
-          setProductList(response.data.products);
-          setLoading(false);
-       })
-    },[])
+  const [products, setProducts] =
+    useState([]);
 
-    let Data=productList.filter((items)=>{
-        return items.title.toLowerCase().indexOf(query.toLowerCase()) !=-1;
-      })
+  const [loading, setLoading] =
+    useState(true);
 
-    if(sort=="Title"){
-      Data=productList.sort((x,y)=>{
-        return x.title > y.title ? 1: -1;
-      })
+  const location = useLocation();
+
+  // SEARCH PARAM
+  const searchParams =
+    new URLSearchParams(location.search);
+
+  const searchQuery =
+    searchParams.get("search") || "";
+
+  // FETCH PRODUCTS
+  useEffect(() => {
+
+    async function fetchProducts() {
+
+      setLoading(true);
+
+      try {
+
+        const response =
+          await getProductList();
+
+        const allProducts =
+          response.data.products;
+
+        // SMART SEARCH LOGIC
+        const filtered =
+          allProducts.filter((item) => {
+
+            const query =
+              searchQuery
+                .toLowerCase()
+                .trim();
+
+            // DON'T SHOW ALL PRODUCTS
+            if (!query) return false;
+
+            // SEARCHABLE TEXT
+            const searchableText = `
+
+              ${item.title || ""}
+              ${item.category || ""}
+              ${item.brand || ""}
+              ${item.description || ""}
+
+            `
+              .toLowerCase();
+
+            // SPLIT USER WORDS
+            const queryWords =
+              query.split(" ");
+
+            // MATCH PARTIAL WORDS
+            return queryWords.every(
+              (word) =>
+
+                searchableText.includes(
+                  word
+                )
+            );
+          });
+
+        setProducts(filtered);
+
+      } catch (error) {
+
+        console.log(error);
+      }
+
+      setLoading(false);
     }
 
-    else if(sort=="PriceLH"){
-      Data=productList.sort((x,y)=>{
-        return x.price - y.price;
-      })
-    }
+    fetchProducts();
 
-    else if(sort=="PriceHL"){
-      Data=productList.sort((x,y)=>{
-        return y.price - x.price;
-      })
+  }, [searchQuery]);
 
-    }
-    
-    
-    function HandleQuery(event){
-      Setquery(event.target.value);
-    }
-
-    function HandleSort(event){
-      Setsort(event.target.value);
-    }
-  
   return (
-    <>
-       {loading ? (
-       < Loading />
+    <div className="bg-[#f1f3f6] min-h-screen py-6">
+
+      <div className="max-w-7xl mx-auto px-4">
+
+        {loading ? (
+
+          <Loading />
+
         ) : (
-        <div className="bg-white max-w-2xl  m-auto mt-10 mb-10 p-10 flex flex-col">
-            <div className="flex flex-col gap-5 sm:flex-row justify-between mb-10 ">
-              <input onChange={HandleQuery} className="border-2 border-blue-800 px-7 rounded-lg " placeholder='Search Here ...' />
-                <select value={sort} onChange={HandleSort} class="bg-gray-100 py-1 px-5 border-2 border-gray-700 rounded-lg">
-                    <option value="Default">Default Sort</option>
-                    <option value="Title">Sort by title</option>
-                    <option value="PriceLH">Sort by price: low to high</option>
-                    <option value="PriceHL">Sort by price: high to low</option>
-                </select>
+
+          <>
+            {/* HEADING */}
+            <div className="mb-6">
+
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
+
+                Search Results
+
+              </h1>
+
+              <p className="text-gray-500 mt-2">
+
+                {products.length} products found for
+                {" "}
+
+                <span className="font-medium text-gray-700">
+
+                  "{searchQuery}"
+
+                </span>
+              </p>
             </div>
 
-           { Data.length>0 &&<ProductList products={Data} />}
-          {Data.length<1 && <NoMatching />} 
+            {/* PRODUCTS */}
+            {products.length > 0 ? (
 
-        </div>
+              <ProductList
+                products={products}
+              />
+
+            ) : (
+
+              <NoMatching />
+            )}
+          </>
         )}
-        
-       </>
-
-     
+      </div>
+    </div>
   );
 }
 
-export default ProductListPage ;
+export default ProductListPage;
