@@ -41,7 +41,7 @@ function SignUpPage({ setUser }) {
       const { user, token } = response.data;
       localStorage.setItem("token", token);
       setUser(user);
-      navigate("/dashboard");
+      navigate("/login");
     })
     .catch((err) => {
       console.error("Signup error", err.response || err);
