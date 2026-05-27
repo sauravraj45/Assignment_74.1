@@ -1,124 +1,105 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { Link } from "react-router-dom";
 
-function CartRow({
-  Url,
-  title,
-  price,
-  id,
-  quantity,
-  onQuantityChange,
-  onRemove,
-}) {
+function BuyNowMessage({ onBackHome }) {
 
-  const [localQuantity, setLocalQuantity] = useState(quantity);
+  // CURRENT DATE
+  const today = new Date();
 
-  useEffect(() => {
-    setLocalQuantity(quantity);
-  }, [quantity]);
+  // START DELIVERY DATE (+5 DAYS)
+  const startDate = new Date();
 
-  function updateQty(val) {
-    const newQty = Math.max(1, val);
-    setLocalQuantity(newQty);
-    onQuantityChange(id, newQty);
-  }
+  startDate.setDate(
+    today.getDate() + 5
+  );
 
-  function handleRemove() {
-    onRemove(id);
-  }
+  // END DELIVERY DATE (+6 DAYS)
+  const endDate = new Date();
 
-  // DELIVERY DATE = CURRENT DATE + 5 DAYS
-  const deliveryDate = new Date();
-  deliveryDate.setDate(deliveryDate.getDate() + 5);
+  endDate.setDate(
+    today.getDate() + 6
+  );
 
-  const formattedDate = deliveryDate.toLocaleDateString("en-IN", {
-    day: "numeric",
+  // FORMAT DATE
+  const options = {
     month: "short",
-  });
+    day: "numeric",
+  };
+
+  const formattedStart =
+    startDate.toLocaleDateString(
+      "en-US",
+      options
+    );
+
+  const formattedEnd =
+    endDate.toLocaleDateString(
+      "en-US",
+      options
+    );
 
   return (
-    <div className="border-b p-5">
+    <div className="flex justify-center items-center min-h-[70vh] bg-gray-100 px-4">
 
-      <div className="flex gap-5">
+      <div className="bg-white p-8 rounded-2xl shadow-lg max-w-lg w-full text-center">
 
-        {/* LEFT SIDE */}
-        <div className="flex flex-col items-center">
+        {/* SUCCESS ICON */}
+        <div className="text-green-600 text-5xl mb-3">
 
-          {/* IMAGE */}
-          <img
-            src={Url}
-            alt={title}
-            className="w-32 h-32 object-contain"
-          />
-
-          {/* QUANTITY BELOW IMAGE */}
-          <div className="flex items-center gap-1 mt-3">
-
-            <button
-              onClick={() => updateQty(localQuantity - 1)}
-              className="border px-2"
-            >
-              -
-            </button>
-
-            <span className="px-3">{localQuantity}</span>
-
-            <button
-              onClick={() => updateQty(localQuantity + 1)}
-              className="border px-2"
-            >
-              +
-            </button>
-
-          </div>
+          ✔
 
         </div>
 
-        {/* RIGHT SIDE */}
-        <div className="flex flex-col flex-1 mt-5">
+        {/* TITLE */}
+        <h2 className="text-3xl font-bold text-gray-800 mb-2">
 
-          {/* TITLE */}
-          <h2 className="text-xl font-medium text-gray-800 hover:text-blue-600 cursor-pointer">
-            {title}
-          </h2>
+          Order Confirmed!
 
-          {/* PRICE */}
-          <p className="text-lg font-semibold mt-3">
-            ₹{price}
+        </h2>
+
+        {/* MESSAGE */}
+        <p className="text-gray-600 mb-2 text-[16px]">
+
+          Thank you for shopping with us.
+
+        </p>
+
+        <p className="text-gray-500 text-sm mb-6">
+
+          Your order has been placed successfully and is being processed.
+
+        </p>
+
+        {/* DELIVERY INFO */}
+        <div className="bg-gray-50 border rounded-xl p-5 mb-6">
+
+          <p className="text-sm text-gray-500">
+
+            Expected Delivery by
+
           </p>
 
-          {/* DELIVERY */}
-          <p className="text-ms text-gray-500 mt-4">
-            Delivery by{" "}
-            <span className="font-medium text-black">
-              {formattedDate}
-            </span>
-          </p>
+          <p className="font-semibold text-gray-800 text-xl mt-2">
 
+            {formattedStart} - {formattedEnd}
+
+          </p>
         </div>
 
+        {/* BUTTON */}
+        <div className="flex justify-center">
+
+          <Link
+            to="/"
+            onClick={onBackHome}
+            className="px-6 h-[48px] bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all flex items-center justify-center font-medium text-[15px]"
+          >
+            Continue Shopping
+          </Link>
+        </div>
       </div>
-
-      {/* LINE */}
-      <hr className="my-4" />
-
-      {/* ACTIONS */}
-      <div className="flex gap-20 text-lg font-semibold">
-
-        <button className="hover:text-blue-600">
-          Save for later
-        </button>
-
-        <button
-          onClick={handleRemove}
-          className="hover:text-red-500"
-        >
-          Remove
-        </button>
-
-      </div>
-
     </div>
   );
 }
 
-export default CartRow;
+export default BuyNowMessage;
