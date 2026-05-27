@@ -63,7 +63,7 @@ function CartList({ products, cart, onCart, onRemove }) {
       quantity: pendingCart[p.id],
     }));
 
-    await fetch("http://localhost:5000/api/order", {
+    await fetch("https://assignment-74-1.onrender.com/api/order", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -85,7 +85,7 @@ function CartList({ products, cart, onCart, onRemove }) {
   // 🔥 PAYMENT HANDLER
   async function handleProceedToCheckout() {
     try {
-      const res = await fetch("http://localhost:5000/api/payment/create-order", {
+      const res = await fetch("https://assignment-74-1.onrender.com/api/payment/create-order", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
