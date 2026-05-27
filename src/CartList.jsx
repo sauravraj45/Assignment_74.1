@@ -26,7 +26,7 @@ function CartList({ products, cart, onCart, onRemove }) {
   useEffect(() => {
     if (!userId) return;
 
-    fetch(`http://localhost:5000/api/address/${userId}`)
+    fetch(`https://assignment-74-1.onrender.com/api/address/${userId}`)
       .then(res => res.json())
       .then(data => {
         console.log("Fetched Address:", data);

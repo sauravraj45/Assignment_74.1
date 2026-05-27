@@ -5,7 +5,7 @@ function OrdersSection() {
   const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/order/${user.id}`)
+    fetch(`https://assignment-74-1.onrender.com/api/order/${user.id}`)
       .then(res => res.json())
       .then(data => setOrders(data));
   }, []);
