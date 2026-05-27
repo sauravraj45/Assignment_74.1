@@ -1,25 +1,55 @@
-
-
 const express = require("express");
 const router = express.Router();
 const db = require("./db");
 
+// ✅ AUTO CREATE ADDRESSES TABLE
+db.query(`
+  CREATE TABLE IF NOT EXISTS addresses (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    name VARCHAR(100),
+    phone VARCHAR(20),
+    address TEXT,
+    city VARCHAR(50),
+    state VARCHAR(50),
+    pincode VARCHAR(10),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (user_id)
+    REFERENCES users(id)
+    ON DELETE CASCADE
+  )
+`, (err) => {
+  if (err) {
+    console.log("Addresses Table Error:", err);
+  } else {
+    console.log("Addresses table ready ✅");
+  }
+});
+
 
 // ✅ GET ADDRESSES BY USER
 router.get("/:userId", (req, res) => {
+
   const userId = req.params.userId;
 
   if (!userId) {
-    return res.status(400).json({ error: "User ID required" });
+    return res.status(400).json({
+      error: "User ID required"
+    });
   }
 
   db.query(
     "SELECT * FROM addresses WHERE user_id=? ORDER BY id DESC",
     [userId],
     (err, result) => {
+
       if (err) {
         console.log("GET ERROR:", err);
-        return res.status(500).json({ error: "DB Error" });
+
+        return res.status(500).json({
+          error: "DB Error"
+        });
       }
 
       res.json(result);
@@ -30,20 +60,43 @@ router.get("/:userId", (req, res) => {
 
 // ✅ ADD ADDRESS
 router.post("/", (req, res) => {
-  const { user_id, name, phone, address, city, state, pincode } = req.body;
 
-  // 🔥 VALIDATION
-  if (!user_id || !name || !phone || !address || !city || !state || !pincode) {
-    return res.status(400).json({ error: "All fields required" });
+  const {
+    user_id,
+    name,
+    phone,
+    address,
+    city,
+    state,
+    pincode
+  } = req.body;
+
+  // ✅ VALIDATION
+  if (
+    !user_id ||
+    !name ||
+    !phone ||
+    !address ||
+    !city ||
+    !state ||
+    !pincode
+  ) {
+    return res.status(400).json({
+      error: "All fields required"
+    });
   }
 
   db.query(
     "INSERT INTO addresses (user_id, name, phone, address, city, state, pincode) VALUES (?, ?, ?, ?, ?, ?, ?)",
     [user_id, name, phone, address, city, state, pincode],
     (err, result) => {
+
       if (err) {
         console.log("INSERT ERROR:", err);
-        return res.status(500).json({ error: "Insert failed" });
+
+        return res.status(500).json({
+          error: "Insert failed"
+        });
       }
 
       res.json({
@@ -61,44 +114,69 @@ router.post("/", (req, res) => {
 });
 
 
-// ✅ UPDATE ADDRESS (SAFE)
+// ✅ UPDATE ADDRESS
 router.put("/:id", (req, res) => {
-  const { user_id, name, phone, address, city, state, pincode } = req.body;
+
+  const {
+    user_id,
+    name,
+    phone,
+    address,
+    city,
+    state,
+    pincode
+  } = req.body;
+
   const id = req.params.id;
 
   if (!user_id) {
-    return res.status(400).json({ error: "User ID required" });
+    return res.status(400).json({
+      error: "User ID required"
+    });
   }
 
   db.query(
     "UPDATE addresses SET name=?, phone=?, address=?, city=?, state=?, pincode=? WHERE id=? AND user_id=?",
     [name, phone, address, city, state, pincode, id, user_id],
     (err, result) => {
+
       if (err) {
         console.log("UPDATE ERROR:", err);
-        return res.status(500).json({ error: "Update failed" });
+
+        return res.status(500).json({
+          error: "Update failed"
+        });
       }
 
-      res.json({ success: true });
+      res.json({
+        success: true
+      });
     }
   );
 });
 
 
-// ✅ DELETE ADDRESS (SAFE)
+// ✅ DELETE ADDRESS
 router.delete("/:id/:userId", (req, res) => {
+
   const { id, userId } = req.params;
 
   db.query(
     "DELETE FROM addresses WHERE id=? AND user_id=?",
     [id, userId],
     (err) => {
+
       if (err) {
         console.log("DELETE ERROR:", err);
-        return res.status(500).json({ error: "Delete failed" });
+
+        return res.status(500).json({
+          error: "Delete failed"
+        });
       }
 
-      res.json({ success: true });
+      res.json({
+        success: true
+      });
     }
   );
 });
