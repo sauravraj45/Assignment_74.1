@@ -39,8 +39,6 @@ function SignUpPage({ setUser }) {
     })
     .then((response) => {
       const { user, token } = response.data;
-      localStorage.setItem("token", token);
-      setUser(user);
       navigate("/login");
     })
     .catch((err) => {
