@@ -105,7 +105,7 @@ function CartList({ products, cart, onCart, onRemove }) {
 
         handler: async function (response) {
           const verifyRes = await fetch(
-            "http://localhost:5000/api/payment/verify-payment",
+            "https://assignment-74-1.onrender.com/api/payment/verify-payment",
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },

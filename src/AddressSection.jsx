@@ -23,7 +23,7 @@ function AddressSection() {
   useEffect(() => {
     if (!userId) return;
 
-    fetch(`http://localhost:5000/api/address/${userId}`)
+    fetch(`https://assignment-74-1.onrender.com/api/address/${userId}`)
       .then(res => res.json())
       .then(data => setAddresses(data))
       .catch(err => console.log(err));
@@ -57,7 +57,7 @@ function AddressSection() {
       return;
     }
 
-    const res = await fetch("http://localhost:5000/api/address", {
+    const res = await fetch("https://assignment-74-1.onrender.com/api/address", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -93,7 +93,7 @@ function AddressSection() {
       return;
     }
 
-    await fetch(`http://localhost:5000/api/address/${editingId}`, {
+    await fetch(`https://assignment-74-1.onrender.com/api/address/${editingId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...form, user_id: userId }),
@@ -109,7 +109,7 @@ function AddressSection() {
 
   // ✅ DELETE
   async function handleDelete(id) {
-    await fetch(`http://localhost:5000/api/address/${id}/${userId}`, {
+    await fetch(`https://assignment-74-1.onrender.com/api/address/${id}/${userId}`, {
       method: "DELETE",
     });
 

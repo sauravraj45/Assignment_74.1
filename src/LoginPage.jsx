@@ -8,7 +8,7 @@ import { FaEnvelope, FaLock } from 'react-icons/fa';
 function LoginPage({ setUser }) {
 
   function callLoginApi(values, bag){
-    axios.post("http://localhost:5000/api/auth/login", {
+    axios.post("https://assignment-74-1.onrender.com/api/auth/login", {
         email: values.email,
         password: values.password,
     })

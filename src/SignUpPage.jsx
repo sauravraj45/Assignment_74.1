@@ -32,7 +32,7 @@ function SignUpPage({ setUser }) {
     setIsSubmitting(true);
     setApiError("");
 
-    axios.post("http://localhost:5000/api/auth/signup", {
+    axios.post("https://assignment-74-1.onrender.com/api/auth/signup", {
       fullName: values.username,
       email: values.email,
       password: values.password,

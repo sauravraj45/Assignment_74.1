@@ -19,7 +19,7 @@ function Checkout({ products, cart, totalPrice, onOrderSuccess }) {
       setLoading(true);
 
       // 1. Create order
-      const res = await fetch("http://localhost:5000/api/payment/create-order", {
+      const res = await fetch("https://assignment-74-1.onrender.com/api/payment/create-order", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -40,7 +40,7 @@ function Checkout({ products, cart, totalPrice, onOrderSuccess }) {
 
         handler: async function (response) {
           const verifyRes = await fetch(
-            "http://localhost:5000/api/payment/verify-payment",
+            "https://assignment-74-1.onrender.com/api/payment/verify-payment",
             {
               method: "POST",
               headers: {

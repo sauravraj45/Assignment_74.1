@@ -40,7 +40,7 @@ function App() {
     if (token) {
 
       axios
-        .get("http://localhost:5000/api/auth/me", {
+        .get("https://assignment-74-1.onrender.com/api/auth/me", {
           headers: {
             Authorization: token,
           },
