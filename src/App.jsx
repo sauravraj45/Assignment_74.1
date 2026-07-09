@@ -13,6 +13,7 @@ import ForgotPasswordPage from "./ForgotPasswordPage";
 import Dashboard from "./Dashboard";
 import CategoryPage from "./CategoryPage";
 import ProductListPage from "./ProductListPage"
+import { ChatWidget } from "./ai";
 
 function App() {
 
@@ -201,6 +202,8 @@ function App() {
 
       {/* FOOTER */}
       <Footer />
+       {/* AI Chatbot */}
+      {user && <ChatWidget />}
     </div>
   );
 }

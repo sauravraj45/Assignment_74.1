@@ -1,0 +1,89 @@
+/*
+  APNA AI — design tokens
+  ------------------------------------------------------------
+  Scoped under .apna-ai-root so dropping this file into a host
+  app never leaks styles onto the rest of the page.
+
+  Palette
+    --apna-ink       #22163F  deep plum-indigo (chrome, header, user bubble)
+    --apna-ink-2     #3D2A72  lighter ink, gradient partner for user bubble
+    --apna-marigold  #FF9F1C  festive marigold-orange (accent, launcher, signature thread)
+    --apna-teal      #17A398  online / success indicator
+    --apna-surface   #FFFCF7  warm paper background
+    --apna-cloud     #F1ECFF  soft lavender AI bubble
+    --apna-danger    #E5484D  error state
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+.apna-ai-root {
+  --apna-ink: #22163f;
+  --apna-ink-2: #3d2a72;
+  --apna-marigold: #ff9f1c;
+  --apna-marigold-soft: #ffe3b8;
+  --apna-teal: #17a398;
+  --apna-surface: #fffcf7;
+  --apna-cloud: #f1ecff;
+  --apna-danger: #e5484d;
+  --apna-ink-text: #241a3b;
+  --apna-muted: #8a80a6;
+
+  --apna-font-display: 'Baloo 2', ui-rounded, system-ui, sans-serif;
+  --apna-font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --apna-font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  font-family: var(--apna-font-body);
+  color: var(--apna-ink-text);
+}
+
+.apna-ai-root * {
+  box-sizing: border-box;
+}
+
+/* Signature element — the "marigold toran": a thin garland of glowing
+   dots strung along the header's lower edge, each pulsing in sequence,
+   evoking the marigold-string toran hung at the doorway of Indian shops. */
+.apna-toran {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  padding: 0 14px;
+  height: 6px;
+  overflow: hidden;
+}
+
+.apna-toran span {
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--apna-marigold);
+  opacity: 0.35;
+  animation: apna-toran-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes apna-toran-pulse {
+  0%, 100% { opacity: 0.28; transform: translateY(0) scale(1); }
+  50% { opacity: 1; transform: translateY(-1px) scale(1.15); }
+}
+
+/* Scrollbar polish inside the message list */
+.apna-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.apna-scroll::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--apna-ink) 20%, transparent);
+  border-radius: 999px;
+}
+.apna-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .apna-ai-root * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
