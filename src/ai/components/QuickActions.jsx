@@ -1,44 +1,63 @@
 import { motion } from 'framer-motion';
-import { Truck, Package, MapPin, CreditCard, Undo2, ShoppingBag } from 'lucide-react';
 
 const ACTIONS = [
-  { label: 'Track My Order', icon: Truck },
-  { label: 'Show My Orders', icon: Package },
-  { label: 'My Addresses', icon: MapPin },
-  { label: 'Payment Help', icon: CreditCard },
-  { label: 'Return Order', icon: Undo2 },
-  { label: 'Shopping Help', icon: ShoppingBag },
+  'An order I placed',
+  'Not about an Order',
 ];
 
-/**
- * Grid of quick-reply shortcuts. Selecting one sends its label as a message.
- *
- * @param {{ onSelect: (text: string) => void }} props
- */
-export default function QuickActions({ onSelect }) {
+export default function QuickActions({
+  onSelect,
+  disabled,
+}) {
+  const handleClick = (label) => {
+    if (disabled) return;
+
+    onSelect(label);
+  };
+
   return (
-    <div className="grid grid-cols-2 gap-2 w-full">
-      {ACTIONS.map(({ label, icon: Icon }, i) => (
-        <motion.button
-          key={label}
-          type="button"
-          onClick={() => onSelect(label)}
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: i * 0.05 }}
-          whileHover={{ y: -2 }}
-          whileTap={{ scale: 0.97 }}
-          className="flex items-center gap-2 rounded-xl px-3 py-2.5 text-xs font-medium text-left border transition-colors"
+    <div className="w-full flex justify-start pl-5 mt-5">
+      <motion.div
+        initial={{ opacity: 0, y: 6 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="inline-block overflow-hidden rounded-xl border"
+        style={{
+          borderColor: '#dcdcdc',
+          background: disabled ? '#f3f4f6' : '#ffffff',
+        }}
+      >
+        {/* Empty Row */}
+        <div
           style={{
-            borderColor: 'var(--apna-marigold-soft)',
-            background: 'var(--apna-surface)',
-            color: 'var(--apna-ink)',
+            height: '24px',
+            borderBottom: '1px solid #ececec',
+            background: disabled ? '#f3f4f6' : '#ffffff',
           }}
-        >
-          <Icon size={15} style={{ color: 'var(--apna-marigold)' }} strokeWidth={2.25} />
-          <span>{label}</span>
-        </motion.button>
-      ))}
+        />
+
+        {ACTIONS.map((label, index) => (
+          <button
+            key={label}
+            type="button"
+            onClick={() => handleClick(label)}
+            className="block w-full whitespace-nowrap text-left transition-colors"
+            style={{
+              padding: '10px 18px',
+              fontSize: '14px',
+              fontWeight: 400,
+              color: '#2874F0',
+              background: disabled ? '#f3f4f6' : '#ffffff',
+              cursor: disabled ? 'not-allowed' : 'pointer',
+              borderBottom:
+                index !== ACTIONS.length - 1
+                  ? '1px solid #ececec'
+                  : 'none',
+            }}
+          >
+            {label}
+          </button>
+        ))}
+      </motion.div>
     </div>
   );
 }

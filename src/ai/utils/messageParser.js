@@ -1,3 +1,4 @@
+
 /**
  * Generates a reasonably unique id for a locally-created message.
  * Falls back gracefully if crypto.randomUUID isn't available.
