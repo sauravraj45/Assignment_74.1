@@ -1,156 +1,326 @@
-# Apna Store – Modern E-Commerce Web Application  
+# Apna Store – AI Powered Modern E-Commerce Platform
 
-**Live Demo:** https://assignment-74-1.netlify.app/  
-
----
-
-## Overview  
-
-Apna Store is a fully responsive and modern E-Commerce web application designed to provide a seamless online shopping experience across desktop, tablet, and mobile devices.  
-
-The platform allows users to browse products by categories, search products dynamically, view detailed product information, manage their shopping cart, add delivery addresses, complete secure online payments, and track order status in real-time.  
-
-This project demonstrates practical implementation of frontend development, API integration, responsive UI/UX design, authentication systems, payment gateway integration, and modern ecommerce architecture in a real-world scenario.
+**🌐 Live Demo:** https://assignment-74-1.netlify.app/
 
 ---
 
-## Features  
+# Overview
 
-- Dynamic product listing with category-wise browsing  
-- Smart ecommerce-style search functionality  
-- Detailed product pages with multiple product images  
-- Similar products recommendations section  
-- Add to cart, remove from cart, and update quantity  
-- Secure Login & Signup authentication system  
-- Token-based authorization for protected routes  
-- Razorpay payment gateway integration  
-- Delivery address management section  
-- Dynamic order confirmation system  
-- Order tracking & delivery status updates  
-- Infinite scrolling products section  
-- Product filtering and sorting options  
-- Responsive design for desktop, tablet, and mobile devices  
-- REST API integration for dynamic product handling  
+Apna Store is a modern AI-powered E-Commerce web application designed to provide a seamless shopping experience across desktop, tablet, and mobile devices.
+
+The platform allows users to browse products, search items, manage their shopping cart, securely place orders, manage delivery addresses, complete online payments, and track orders in real time.
+
+The application also includes **APNA AI**, an intelligent shopping assistant capable of understanding natural language, helping users with orders, deliveries, refunds, payments, profile information, saved addresses, and general shopping queries through an interactive conversational interface.
+
+This project demonstrates practical implementation of frontend development, backend architecture, authentication, payment integration, AI-powered customer support, database management, and modern ecommerce application development.
 
 ---
 
-## Tech Stack  
+# Features
 
-- **Frontend:** React.js, Tailwind CSS  
-- **Routing:** React Router DOM  
-- **State Management:** React Hooks & Context API  
-- **API Integration:** REST API & Axios  
-- **Authentication:** Token-based Authentication  
-- **Payment Gateway:** Razorpay Integration  
-- **Deployment:** Netlify  
+## 🛍 Shopping Features
+
+- Dynamic product listing
+- Category-wise product browsing
+- Smart product search
+- Product filtering & sorting
+- Detailed product information page
+- Similar product recommendations
+- Add to Cart
+- Update Cart Quantity
+- Remove from Cart
+- Responsive shopping experience
+- Infinite scrolling products
+- Secure Login & Signup
+- Token-based Authentication
+- Razorpay Payment Integration
+- Delivery Address Management
+- Dynamic Order Confirmation
+- Order Tracking
+- REST API Integration
 
 ---
 
-## Project Objective  
+## 🤖 APNA AI Shopping Assistant
 
-The objective of this project is to build a scalable and user-friendly E-Commerce platform that focuses on:  
+The platform includes **APNA AI**, an intelligent shopping assistant built using Google Gemini and FastAPI.
 
-- Delivering a clean and intuitive ecommerce user interface  
-- Ensuring secure authentication and payment handling  
-- Efficient cart and product state management  
-- Providing smooth shopping and checkout experience  
-- Building responsive and modern ecommerce architecture  
-- Implementing dynamic search and product filtering systems  
+### AI Features
+
+- 💬 Natural language conversations
+- 📦 View order details
+- 🚚 Track orders
+- 👤 View profile information
+- 📍 View saved delivery addresses
+- 💳 Payment assistance
+- 💰 Refund guidance
+- 🔄 Return & Replacement support
+- 🎟 Coupon & discount assistance
+- 📚 Shopping FAQ knowledge base
+- 🧠 Context-aware conversations
+- 📋 Guided menu-based customer support
+- 🔐 Secure access to authenticated customer data
+- ⚡ Fast AI responses using custom tool-calling architecture
 
 ---
 
-## Project Structure  
+# Tech Stack
 
-```bash
-src/
-├── components/
-├── pages/
-├── context/
-├── services/
-├── assets/
-├── Api.js
-├── App.jsx
-└── main.jsx
+## Frontend
+
+- React.js
+- Tailwind CSS
+- Framer Motion
+- React Router DOM
+- Axios
+
+## Backend
+
+- FastAPI
+- Python
+- SQLAlchemy
+- Alembic
+
+## AI
+
+- Google Gemini API
+- Custom Tool Calling Framework
+- Structured FAQ Knowledge Base
+- Context-aware AI Assistant
+
+## Database
+
+- MySQL
+
+## Authentication
+
+- JWT Token Authentication
+
+## Payment
+
+- Razorpay
+
+## Deployment
+
+- Frontend → Netlify
+- Backend → Render
+- Database → Railway MySQL
+
+---
+
+# Project Objective
+
+The objective of this project is to build a scalable AI-powered E-Commerce platform focusing on:
+
+- Clean and modern UI/UX
+- Secure authentication
+- Online payment integration
+- Efficient cart management
+- Real-time order tracking
+- AI-powered customer support
+- Context-aware shopping assistance
+- Scalable backend architecture
+- Responsive web design
+
+---
+
+# AI Assistant Architecture
+
+```
+                   User
+                     │
+                     ▼
+          React Frontend (Chat UI)
+                     │
+                     ▼
+             FastAPI Backend
+                     │
+        ┌────────────┼────────────┐
+        │            │            │
+        ▼            ▼            ▼
+   Gemini AI     Tool Calling   MySQL
+                     │
+      ┌──────────────┼──────────────┐
+      ▼              ▼              ▼
+ Profile Tool   Order Tool   FAQ Tool
+      ▼              ▼              ▼
+ Address Tool  Tracking Tool Payment Tool
 ```
 
 ---
 
-## Authentication  
-
-The application uses token-based authentication to secure user sessions.  
-
-User credentials are verified through API calls, and authentication tokens are used to maintain secure access across protected routes within the application.
-
----
-
-## Payment Integration  
-
-The application includes Razorpay payment gateway integration for secure and smooth online transactions.  
-
-Users can complete purchases securely and receive dynamic order confirmation along with expected delivery tracking information.
-
----
-
-## Installation and Setup  
-
-To run this project locally, follow these steps:
+# Project Structure
 
 ```bash
-# Clone the repository
-git clone <your-repository-link>
+Apna_Store/
 
-# Navigate to project directory
+├── frontend/
+│   ├── src/
+│   ├── public/
+│   ├── components/
+│   ├── pages/
+│   ├── context/
+│   ├── services/
+│   └── App.jsx
+│
+├── backend/
+│   ├── app/
+│   ├── alembic/
+│   ├── requirements.txt
+│   ├── main.py
+│   └── .env
+│
+└── README.md
+```
+
+---
+
+# Authentication
+
+The application uses **JWT Token Authentication** to securely authenticate users.
+
+Protected APIs require authenticated access, ensuring users can only access their own:
+
+- Profile
+- Orders
+- Delivery Addresses
+- Order Tracking Information
+
+---
+
+# Payment Integration
+
+The platform integrates **Razorpay Payment Gateway** for secure online transactions.
+
+Features include:
+
+- Secure payments
+- Online order confirmation
+- Dynamic order generation
+- Payment verification
+- Order tracking
+
+---
+
+# AI Shopping Assistant
+
+APNA AI provides intelligent shopping support for authenticated users.
+
+### Supported Queries
+
+- Show my orders
+- Track my latest order
+- Show my addresses
+- View my profile
+- Payment issues
+- Refund status
+- Return policy
+- Replace product
+- Shipping information
+- Coupon information
+- Login help
+- Account assistance
+- Shopping guidance
+
+The assistant securely retrieves user information using authenticated backend tools instead of generating assumptions.
+
+---
+
+# Installation & Setup
+
+Clone the repository
+
+```bash
+git clone <repository-url>
+```
+
+Navigate to the project
+
+```bash
 cd Apna_Store
+```
 
-# Install dependencies
+Install frontend dependencies
+
+```bash
 npm install
+```
 
-# Start development server
+Run frontend
+
+```bash
 npm run dev
 ```
 
----
+Backend
 
-## Future Enhancements  
+```bash
+cd backend
 
-- ❤️ Wishlist functionality  
-- ⭐ Product reviews and ratings  
-- 🧑‍💼 Admin dashboard for product management  
-- 📦 Order history section  
-- 🎟 Coupon and discount system  
-- 🤖 AI-based product recommendations  
-- 🛒 Real backend database integration  
-- 📊 Sales analytics dashboard  
+pip install -r requirements.txt
+
+uvicorn app.main:app --reload
+```
 
 ---
 
-## Contribution  
+# Future Enhancements
 
-Contributions are welcome.  
-
-Follow these steps to contribute:
-
-1. Fork the repository  
-2. Clone your forked repository  
-3. Create a new branch (`feature/your-feature-name`)  
-4. Make your changes  
-5. Commit your changes  
-6. Push to your branch  
-7. Open a pull request  
-
----
-
-## Author  
-
-**Saurav Raj**  
-Software Developer  
-
-Passionate about building scalable web applications and solving real-world problems using modern technologies.
+- ❤️ Wishlist
+- ⭐ Product Reviews & Ratings
+- 🧑‍💼 Admin Dashboard
+- 📊 Sales Analytics
+- 🎟 Loyalty Rewards
+- 📦 Live Shipment Tracking
+- 🌍 Multi-language AI Assistant
+- 🎤 Voice-enabled Shopping
+- 🖼 Image Search
+- 🧠 Personalized AI Product Recommendations
+- 📱 Push Notifications
+- 🤝 Live Chat with Customer Support
 
 ---
 
-## License  
+# Contribution
 
-This project is developed for educational and demonstration purposes only.  
+Contributions are welcome.
 
-Any use of this code for commercial purposes is not permitted without prior authorization.
+1. Fork the repository
+2. Clone your fork
+3. Create a feature branch
+
+```bash
+git checkout -b feature/new-feature
+```
+
+4. Commit changes
+
+```bash
+git commit -m "Added new feature"
+```
+
+5. Push
+
+```bash
+git push origin feature/new-feature
+```
+
+6. Open a Pull Request
+
+---
+
+# Author
+
+## Saurav Raj
+
+**Software Developer**
+
+Passionate about building scalable web applications, AI-powered systems, and solving real-world problems using modern technologies.
+
+---
+
+# License
+
+This project is developed for educational and demonstration purposes.
+
+Commercial use of this project requires prior authorization from the author.
