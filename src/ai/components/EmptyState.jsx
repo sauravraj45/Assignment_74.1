@@ -10,7 +10,7 @@ export default function EmptyState({
   quickActionsDisabled,
 }) {
   const user = JSON.parse(localStorage.getItem('user') || '{}');
-  const firstName = user?.fullName?.split(' ')[0] || 'there';
+  const firstName = user?.fullName?.split(' ')[0] || 'Guest';
 
   const hour = new Date().getHours();
 

@@ -203,7 +203,7 @@ function App() {
       {/* FOOTER */}
       <Footer />
        {/* AI Chatbot */}
-      {user && <ChatWidget />}
+      {<ChatWidget />}
     </div>
   );
 }

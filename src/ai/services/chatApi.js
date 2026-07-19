@@ -21,9 +21,10 @@ const apiClient = axios.create({
 
 // Attach the JWT stored by the host app on every request.
 apiClient.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+  const token = localStorage.getItem("token");
+
+  if (token?.trim()) {
+      config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 });
