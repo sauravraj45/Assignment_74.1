@@ -1,4 +1,3 @@
-
 import { motion } from 'framer-motion';
 import ChatHeader from './ChatHeader.jsx';
 import ChatMessages from './ChatMessages.jsx';
@@ -30,6 +29,9 @@ export default function ChatWindow() {
     messages,
     isLoading,
     error,
+
+    // ⭐ Backend tool result
+    toolResult,
 
     toggleOpen,
 
@@ -70,6 +72,7 @@ export default function ChatWindow() {
       <div className="flex-1 min-h-0">
         <ChatMessages
           messages={messages}
+          toolResult={toolResult}
           isLoading={isLoading}
           error={error}
           onQuickAction={sendQuickAction}

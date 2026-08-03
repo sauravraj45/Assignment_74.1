@@ -2,8 +2,16 @@ import React, { useState, useEffect } from "react";
 import CartRow from "./CartRow";
 import BuyNowMessage from "./BuyNowMessage";
 import EmptyCart from "./EmptyCart";
+import UnavailableCartRow from "./UnavailableCartRow";
 
-function CartList({ products, cart, onCart, onRemove }) {
+function CartList({
+  products,
+  unavailableProducts = [],
+  cart,
+  onCart,
+  onRemove,
+}) {
+
   const [pendingCart, setPendingCart] = useState({ ...cart });
   const [checkout, setCheckout] = useState(false);
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
@@ -265,20 +273,57 @@ function CartList({ products, cart, onCart, onRemove }) {
 
         </div>
 
-        {/* PRODUCTS */}
-        {products.map(product => (
-          <div key={product.id} className="bg-white shadow rounded mb-5">
-            <CartRow
-              Url={product.thumbnail}
-              title={product.title}
-              price={product.price}
-              id={product.id}
-              quantity={pendingCart[product.id]}
-              onQuantityChange={handleQuantityChange}
-              onRemove={onRemove}
-            />
-          </div>
-        ))}
+        {/* AVAILABLE PRODUCTS */}
+{products.map((product) => (
+  <div
+    key={product.id}
+    className="mb-5 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm"
+  >
+    <CartRow
+      Url={
+        product.thumbnail ||
+        product.images?.[0]
+      }
+      title={product.title}
+      price={product.price}
+      id={product.id}
+      quantity={pendingCart[product.id]}
+      onQuantityChange={handleQuantityChange}
+      onRemove={onRemove}
+    />
+  </div>
+))}
+
+{/* UNAVAILABLE PRODUCTS */}
+{unavailableProducts.length > 0 && (
+
+  <div className="mt-2">
+
+    <h2 className="mb-4 text-lg font-semibold text-gray-700">
+      Unavailable Products
+    </h2>
+
+    {unavailableProducts.map((item) => (
+
+      <div
+        key={item.id}
+        className="mb-5 overflow-hidden rounded-xl border border-red-200 bg-white shadow-sm"
+      >
+
+        <UnavailableCartRow
+          id={item.id}
+          onRemove={onRemove}
+        />
+
+      </div>
+
+    ))}
+
+  </div>
+
+)}
+
+        
 
       </div>
 

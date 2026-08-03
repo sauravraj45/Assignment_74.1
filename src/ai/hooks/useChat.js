@@ -1,14 +1,8 @@
-
 import { useCallback, useContext, useRef } from 'react';
 import { ChatContext } from '../context/ChatContext.jsx';
 import { sendChatMessage } from '../services/chatApi.js';
 import { createMessage } from '../utils/messageParser.js';
 
-/**
- * useChat — the single hook the UI components need to talk to the
- * AI support backend. Wraps ChatContext + chatApi so components never
- * touch axios or reducer actions directly.
- */
 export function useChat() {
   const ctx = useContext(ChatContext);
 
@@ -56,27 +50,138 @@ export function useChat() {
           );
         }
 
-        const aiMessage = createMessage('ai', data.reply);
+        // ==========================================
+        // Save latest AI tool result
+        // ==========================================
+
+        if (data.tool_result) {
+
+          localStorage.setItem(
+            "apna_ai_tool_result",
+            JSON.stringify(data.tool_result)
+          );
+
+          // ----------------------------------------
+          // Existing AI Product Cache
+          // ----------------------------------------
+
+          const existingProducts = JSON.parse(
+            localStorage.getItem("apna_ai_products") || "[]"
+          );
+
+          const productMap = new Map();
+
+          existingProducts.forEach((product) => {
+            productMap.set(product.id, product);
+          });
+
+          // ----------------------------------------
+          // Product Search
+          // ----------------------------------------
+
+          if (data.tool_result.type === "product_search") {
+
+            (data.tool_result.recommendations || []).forEach((product) => {
+              productMap.set(product.id, product);
+            });
+
+          }
+
+          // ----------------------------------------
+          // Product Recommendation
+          // ----------------------------------------
+
+          else if (
+            data.tool_result.type === "product_recommendation"
+          ) {
+
+            (data.tool_result.recommendations || []).forEach((product) => {
+              productMap.set(product.id, product);
+            });
+
+          }
+
+          // ----------------------------------------
+          // Product Details
+          // ----------------------------------------
+
+          else if (
+            data.tool_result.type === "product_details" &&
+            data.tool_result.product
+          ) {
+
+            productMap.set(
+              data.tool_result.product.id,
+              data.tool_result.product
+            );
+
+          }
+                    // ----------------------------------------
+            // Product Compare
+            // ----------------------------------------
+
+            else if (
+              data.tool_result.type === "product_compare"
+            ) {
+
+              (data.tool_result.products || []).forEach((product) => {
+
+                productMap.set(
+                  product.id,
+                  product
+                );
+
+              });
+
+            }
+
+         
+
+          // ----------------------------------------
+          // Save merged cache
+          // ----------------------------------------
+
+          localStorage.setItem(
+            "apna_ai_products",
+            JSON.stringify(
+              Array.from(productMap.values())
+            )
+          );
+        }
+
+        // ==========================================
+        // AI Message
+        // ==========================================
+
+        const aiMessage = createMessage(
+          'ai',
+          data.reply,
+          {
+            toolResult: data.tool_result ?? null,
+          }
+        );
 
         dispatch({
           type: 'SEND_SUCCESS',
           reply: aiMessage,
           conversationId: data.conversation_id,
+          toolResult: data.tool_result ?? null,
         });
+
       } catch (err) {
+
         console.error('Chat Error:', err);
 
         let errorMessage =
           'Something went wrong. Please try again.';
 
-        // Request never reached the server
         if (!err.response) {
+
           errorMessage =
             'Unable to connect to the server. Please check your internet connection.';
-        }
 
-        // FastAPI returned a JSON response
-        else if (err.response.data) {
+        } else if (err.response.data) {
+
           errorMessage =
             err.response.data.message ||
             err.response.data.detail ||
@@ -92,22 +197,22 @@ export function useChat() {
     },
     [state.isLoading, state.conversationId, dispatch]
   );
-const sendQuickAction = useCallback(
-  (text) => {
-    dispatch({ type: 'DISABLE_QUICK_ACTIONS' });
-    dispatchSend(text);
-  },
-  [dispatch, dispatchSend]
-);
 
-const sendUserMessage = useCallback(
-  (text) => {
-    dispatch({ type: 'HIDE_QUICK_ACTIONS' });
-    dispatchSend(text);
-  },
-  [dispatch, dispatchSend]
-);
+  const sendQuickAction = useCallback(
+    (text) => {
+      dispatch({ type: 'DISABLE_QUICK_ACTIONS' });
+      dispatchSend(text);
+    },
+    [dispatch, dispatchSend]
+  );
 
+  const sendUserMessage = useCallback(
+    (text) => {
+      dispatch({ type: 'HIDE_QUICK_ACTIONS' });
+      dispatchSend(text);
+    },
+    [dispatch, dispatchSend]
+  );
 
   const retry = useCallback(() => {
     if (state.lastFailedMessage) {
@@ -115,35 +220,55 @@ const sendUserMessage = useCallback(
     }
   }, [state.lastFailedMessage, dispatchSend]);
 
-  const clearChat = useCallback(
-    () => dispatch({ type: 'CLEAR_CHAT' }),
-    [dispatch]
-  );
+  // ==========================================
+  // Clear Chat
+  // ==========================================
 
-  const newChat = useCallback(
-    () => dispatch({ type: 'NEW_CHAT' }),
-    [dispatch]
-  );
+  const clearChat = useCallback(() => {
+
+    localStorage.removeItem("apna_ai_products");
+    localStorage.removeItem("apna_ai_tool_result");
+
+    dispatch({
+      type: 'CLEAR_CHAT',
+    });
+
+  }, [dispatch]);
+
+  // ==========================================
+  // New Chat
+  // ==========================================
+
+  const newChat = useCallback(() => {
+
+    localStorage.removeItem("apna_ai_products");
+    localStorage.removeItem("apna_ai_tool_result");
+
+    dispatch({
+      type: 'NEW_CHAT',
+    });
+
+  }, [dispatch]);
 
   return {
-  isOpen: state.isOpen,
-  messages: state.messages,
-  isLoading: state.isLoading,
-  error: state.error,
-  conversationId: state.conversationId,
+    isOpen: state.isOpen,
+    messages: state.messages,
+    isLoading: state.isLoading,
+    error: state.error,
+    conversationId: state.conversationId,
 
-  // ⭐ New states
-  showQuickActions: state.showQuickActions,
-  quickActionsDisabled: state.quickActionsDisabled,
+    toolResult: state.toolResult,
 
-  toggleOpen,
+    showQuickActions: state.showQuickActions,
+    quickActionsDisabled: state.quickActionsDisabled,
 
-  // ⭐ Different message handlers
-  sendMessage: sendUserMessage,
-  sendQuickAction,
+    toggleOpen,
 
-  retry,
-  clearChat,
-  newChat,
-};
+    sendMessage: sendUserMessage,
+    sendQuickAction,
+
+    retry,
+    clearChat,
+    newChat,
+  };
 }

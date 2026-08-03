@@ -34,46 +34,85 @@ function ProductDetails({ cart, onCart }) {
     useState(true);
 
   // FETCH PRODUCT
-  useEffect(() => {
+  // FETCH PRODUCT
+useEffect(() => {
 
-    async function fetchData() {
+  async function fetchData() {
 
-      setSimilarLoading(true);
+    setSimilarLoading(true);
 
-      const response =
-        await getProductData(id);
+    // ==========================================
+    // FIRST: Check AI Products from localStorage
+    // ==========================================
 
-      setProduct(response.data);
+    const aiProducts = JSON.parse(
+      localStorage.getItem("apna_ai_products") || "[]"
+    );
+
+    const aiProduct = aiProducts.find(
+      (item) => item.id === Number(id)
+    );
+
+    if (aiProduct) {
+
+      setProduct(aiProduct);
 
       setCurrentImage(0);
 
-      // FETCH ALL PRODUCTS
-      const allProducts =
-        await getProductList();
-
-      // ONLY SIMILAR PRODUCTS
-      const related =
-        allProducts.data.products.filter(
-          (item) =>
-            item.category ===
-              response.data.category &&
-            item.id !== response.data.id
-        );
-
-      setSimilarProducts(related);
+      setSimilarProducts(
+        aiProducts.filter(
+          (item) => item.id !== aiProduct.id
+        )
+      );
 
       setSimilarLoading(false);
 
-      // SCROLL TOP
       window.scrollTo({
         top: 0,
         behavior: "smooth",
       });
+
+      return;
     }
 
-    fetchData();
+    // ==========================================
+    // EXISTING DUMMYJSON LOGIC (UNCHANGED)
+    // ==========================================
 
-  }, [id]);
+    const response =
+      await getProductData(id);
+
+    setProduct(response.data);
+
+    setCurrentImage(0);
+
+    // FETCH ALL PRODUCTS
+    const allProducts =
+      await getProductList();
+
+    // ONLY SIMILAR PRODUCTS
+    const related =
+      allProducts.data.products.filter(
+        (item) =>
+          item.category ===
+            response.data.category &&
+          item.id !== response.data.id
+      );
+
+    setSimilarProducts(related);
+
+    setSimilarLoading(false);
+
+    // SCROLL TOP
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
+  fetchData();
+
+}, [id]);
 
   // CHECK CART
   const isInCart = cart[id];
@@ -109,35 +148,42 @@ function ProductDetails({ cart, onCart }) {
   }
 
   // NEXT IMAGE
-  function nextImage() {
+// NEXT IMAGE
+function nextImage() {
 
-    if (
-      currentImage <
-      product.images.length - 1
-    ) {
+  const images =
+    product.images || [product.thumbnail];
 
-      setCurrentImage(currentImage + 1);
+  if (
+    currentImage <
+    images.length - 1
+  ) {
 
-    } else {
+    setCurrentImage(currentImage + 1);
 
-      setCurrentImage(0);
-    }
+  } else {
+
+    setCurrentImage(0);
   }
+}
 
-  // PREV IMAGE
-  function prevImage() {
+// PREV IMAGE
+function prevImage() {
 
-    if (currentImage > 0) {
+  const images =
+    product.images || [product.thumbnail];
 
-      setCurrentImage(currentImage - 1);
+  if (currentImage > 0) {
 
-    } else {
+    setCurrentImage(currentImage - 1);
 
-      setCurrentImage(
-        product.images.length - 1
-      );
-    }
+  } else {
+
+    setCurrentImage(
+      images.length - 1
+    );
   }
+}
 
   return product ? (
 
@@ -172,14 +218,25 @@ function ProductDetails({ cart, onCart }) {
               </button>
 
               {/* IMAGE */}
-              <img
+              {/* <img
                 src={
                   product.images[currentImage]
                 }
                 alt={product.title}
                 className="h-[220px] md:h-[300px] object-contain hover:scale-105 transition-all duration-500"
-              />
+              /> */}
 
+              <img
+                src={
+                  product.images?.[currentImage] ||
+                  product.thumbnail ||
+                  product.image ||
+                  "https://placehold.co/400x400?text=No+Image"
+                }
+                alt={product.title}
+                className="h-[220px] md:h-[300px] object-contain hover:scale-105 transition-all duration-500"
+              />
+            
               {/* RIGHT */}
               <button
                 onClick={nextImage}
@@ -192,7 +249,7 @@ function ProductDetails({ cart, onCart }) {
             {/* DOTS */}
             <div className="flex items-center justify-center gap-2 mt-5">
 
-              {product.images.map(
+              {(product.images || [product.thumbnail]).map(
                 (_, index) => (
 
                   <button

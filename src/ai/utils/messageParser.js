@@ -1,4 +1,3 @@
-
 /**
  * Generates a reasonably unique id for a locally-created message.
  * Falls back gracefully if crypto.randomUUID isn't available.
@@ -11,19 +10,25 @@ export function generateId() {
 }
 
 /**
- * Formats a Date (or timestamp) into a short local time string, e.g. "10:42 AM".
+ * Formats a Date (or timestamp) into a short local time string.
  */
 export function formatTimestamp(date = new Date()) {
   const d = date instanceof Date ? date : new Date(date);
-  return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  return d.toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
 }
 
 /**
- * Builds a normalized message object used throughout the chat UI.
+ * Builds a normalized chat message.
  *
  * @param {'user'|'ai'} role
  * @param {string} content
- * @param {{ status?: 'sent'|'sending'|'error' }} [meta]
+ * @param {{
+ *   status?: 'sent'|'sending'|'error',
+ *   toolResult?: any
+ * }} meta
  */
 export function createMessage(role, content, meta = {}) {
   return {
@@ -32,12 +37,14 @@ export function createMessage(role, content, meta = {}) {
     content,
     timestamp: Date.now(),
     status: meta.status || 'sent',
+
+    // ⭐ Backend tool result (only AI messages will normally use this)
+    toolResult: meta.toolResult ?? null,
   };
 }
 
 /**
- * Strips characters that could break simple text rendering while
- * leaving markdown syntax intact for react-markdown to interpret.
+ * Removes invalid characters while preserving markdown.
  */
 export function sanitizePlainInput(text) {
   return text.replace(/\u0000/g, '').trim();
